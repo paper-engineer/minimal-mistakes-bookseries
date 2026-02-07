@@ -1,3 +1,23 @@
+# about
+
+this is specifically a website for a book series, with a landing page that can send you to each book, and each book having its own navpane/toc, but it all lives on one site. 
+
+the idea is to start from the minimal-mistakes back end, and tack on the adamrehn book css and nav pane building. I like subsites, but dude did not implement his shit very well (to be fair, it looks very thrown together) and I think 99% of what I need is in mm already. 
+
+we will say that each book is a collection, so _collections/_v1/c1/page.md. the c1 sub-folder directly correlates to bookstack's chapters. 
+
+I absolutely 0% do not want to deal with pagenums defined separately, so it can all be fkn alphabetical. 
+
+# change log
+
+todo
+- swap out css and see what happens
+- fill out collections book structure with pages
+- tack-on the nav pane stuff, making it iterate in alphabetical order over collections
+- formal support for subsites
+
+---
+
 # [Minimal Mistakes Jekyll theme](https://mmistakes.github.io/minimal-mistakes/)
 
 [![LICENSE](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://raw.githubusercontent.com/mmistakes/minimal-mistakes/master/LICENSE)
