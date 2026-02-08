@@ -11,10 +11,10 @@ I absolutely 0% do not want to deal with pagenums defined separately, so it can 
 # change log
 
 todo
-- swap out css and see what happens
-- fill out collections book structure with pages
-- tack-on the nav pane stuff, making it iterate in alphabetical order over collections
-- formal support for subsites
+- ~~swap out css and see what happens~~ (too hard basket)
+- fill out collections book structure with pages (done but the collections aren't working)
+- tack-on the nav pane stuff, making it iterate in alphabetical order over collections (it builds, now sit on it until I get collections working)
+- formal support for subsites (yeah, let's make the books work first...)
 
 ---
 
