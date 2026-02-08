@@ -1,0 +1,55 @@
+{% if page.sidebar %}
+  <div class="sidebar sticky">
+    {% for s in page.sidebar %}
+      {% if s.image %}
+        <img src="{{ s.image | relative_url }}"
+             alt="{% if s.image_alt %}{{ s.image_alt }}{% endif %}">
+      {% endif %}
+      {% if s.title %}<h3>{{ s.title }}</h3>{% endif %}
+      {% if s.text %}{{ s.text | markdownify }}{% endif %}
+      {% if s.nav %}{% include nav_list nav=s.nav %}{% endif %}
+    {% endfor %}
+    {% if page.sidebar.nav %}
+
+<!-- this is my key change, include nav_list becomes iterate-over-pages-in-collection. -->
+    
+<!-- make array lists of chapters and pages -->
+{% assign documents = site.documents | where: "collection", page.collection %} <!-- this is all pages in the collection -->
+{% for doc in documents %} <!-- take page.path divided by /, [0] is the collection (v1), [1] is the subfolder (c1), now we have a variable chapter with value c1 -->
+  {% assign parts = doc.path | split: "/" %}
+  {% assign doc.chapter = parts[1] %} <!-- now each page has a .chapter property -->
+{% endfor %}
+{% assign chapters = documents | map: "chapter" | sort %} <!-- creates array of .chapters sorted by title (assume numeric prefixes) -->
+
+<!-- check if site theme settings includes collapsible nav, select appropriate element for section title below -->
+{% assign chapter_element = "p" %}
+{% if site.theme-settings.navigation.collapsible == true %}
+  {% assign chapter_element = "summary" %}
+{% endif %}
+
+<!-- iterate through the arrays to build the sidebar, synthesised -->
+{% for chapter_name in chapters %}
+  <!-- if site theme settings includes collapsible nav, wrap the next bit in a details tag -->
+  {% if site.theme-settings.navigation.collapsible == true %}<details{% if site.theme-settings.navigation.collapsed != true or page.chapter == chapter_name %} open="true"{% endif %}>{% endif %}
+    <!-- render title of section -->
+    <{{ chapter_element }} class="chapter"> <!-- put the correct tag based on whether it's collapsible -->
+      <!-- {% if index.icon %}{% assign components = index.url | split: "/" %}<span class="icon icon-{{ components[-2] | escape }} {{ index.icon | escape }}"></span> {% endif %} something about icons, commented out for now -->
+      {{ chapter_name | split: "-" | slice: 1, chapter_name.size | join: " " | capitalize | escape }} <!-- clean up title: split subfolder name into array divided at the "-"; remove the first item, up to the length of the whole thing (so, all of it); joins and capitalises; escape for safety -->
+    </{{ chapter_element }}>
+    <!-- rendering page list... -->
+    <ul>
+    <!-- pull all pages in this chapter, then render them as a list -->
+      {% assign chapter_pages = documents | where_exp: "doc", "doc.chapter == chapter_name" %}
+      {% for p in chapter_pages %}
+        <li{% if p.url == page.url %} class="selected"{% endif %}><a href="{{ p.url | relative_url | uri_escape }}">{{ p.title | escape }}</a></li>
+      {% endfor %}
+    </ul>
+	{% if site.theme-settings.navigation.collapsible == true %}</details>{% endif %} <!-- if site theme settings includes collapsible nav, end the details tag here -->
+{% endfor %}
+
+<!-- end of experimental code -->
+    
+    {% endif %}
+  </div>
+{% endif %}
+
